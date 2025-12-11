@@ -9,7 +9,6 @@ def emplacement(L1, L2):
         print(i)
     print('\n')
 
-
 def win_condition(L1, joueur):
     for ligne in L1:
         if all(case == joueur for case in ligne):
@@ -23,30 +22,26 @@ def win_condition(L1, joueur):
         return True
     return False
 
-
-
-
 def jouer():
     L1, L2 = grille()
     for i in range(9):
         while True:
             n = int(input('Choisis une case (1 à 9) : '))
             if n < 1 or n > 9:
-                print("Numéro invalide !")
+                print("Numéro invalide")
                 continue
             y = (n-1)//3
             x = (n-1)%3
             if L1[y][x] != " ":
-                print("Case déjà prise !")
+                print("Case déjà prise")
                 continue
             break
         joueur = 'X' if i % 2 == 0 else 'O'
         L1[y][x] = joueur
         emplacement(L1, L2)
-        
-        if win_condition(L1, joueur):
-            print(f"Joueur {joueur} gagne !")
-            return
-    print("Match nul !")
 
+        if win_condition(L1, joueur):
+            print(f"Joueur {joueur} gagne")
+            return
+    print("Match nul")
 jouer()

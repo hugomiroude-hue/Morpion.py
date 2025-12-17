@@ -1,6 +1,6 @@
 import socket
 
-HOST = "10.21.0.57"
+HOST = "0.0.0.0"
 PORT = 5000
 
 def grille():

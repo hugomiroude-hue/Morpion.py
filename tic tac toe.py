@@ -9,17 +9,12 @@ def emplacement(L1, L2):
         print(i)
     print('\n')
 
-def win_condition(L1, joueur):
-    for ligne in L1:
-        if all(case == joueur for case in ligne):
-            return True
+def win(L, j):
     for i in range(3):
-        if all(L1[j][i] == joueur for j in range(3)):
-            return True
-    if all(L1[i][i] == joueur for i in range(3)):
-        return True
-    if all(L1[i][2-i] == joueur for i in range(3)):
-        return True
+        if all(L[i][k] == j for k in range(3)): return True
+        if all(L[k][i] == j for k in range(3)): return True
+    if all(L[i][i] == j for i in range(3)): return True
+    if all(L[i][2-i] == j for i in range(3)): return True
     return False
 
 def jouer():
@@ -40,7 +35,7 @@ def jouer():
         L1[y][x] = joueur
         emplacement(L1, L2)
 
-        if win_condition(L1, joueur):
+        if win(L1, joueur):
             print(f"Joueur {joueur} gagne")
             return
     print("Match nul")

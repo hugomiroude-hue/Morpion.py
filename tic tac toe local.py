@@ -1,6 +1,6 @@
-import socket, time
+import socket
 
-HOST = "0.0.0.0" 
+HOST = "10.21.0.57"
 PORT = 5000
 
 def grille():
@@ -27,15 +27,10 @@ def win(L, j):
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server.bind((HOST, PORT))
 server.listen(1)
-for i in range (1000):
-    if conn and addr == server.accept():
-        break
-    else:
-        print("En attente de connexion...")
-        conn, addr = server.accept()
-        print("Connecté à", addr)
-        time.sleep(1) 
 
+print("En attente de connexion...")
+conn, addr = server.accept()
+print("Connecté à", addr)
 
 plateau = grille()
 
@@ -59,6 +54,9 @@ for tour in range(9):
         afficher(plateau)
         print("Victoire de", joueur)
         break
+else:   
+    afficher(plateau)
+    print("Match nul")
 
 conn.close()
 server.close()

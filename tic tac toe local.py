@@ -1,4 +1,4 @@
-import socket
+import socket, time
 
 HOST = "0.0.0.0" 
 PORT = 5000
@@ -7,9 +7,14 @@ def grille():
     return [[" " for _ in range(3)] for _ in range(3)]
 
 def afficher(L):
+    print("1 | 2 | 3")
+    print("---------")
+    print("4 | 5 | 6")
+    print("---------")
+    print("7 | 8 | 9")
+    print()
     for ligne in L:
         print(ligne)
-    print()
 
 def win(L, j):
     for i in range(3):
@@ -22,10 +27,15 @@ def win(L, j):
 server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server.bind((HOST, PORT))
 server.listen(1)
+for i in range (1000):
+    if conn and addr == server.accept():
+        break
+    else:
+        print("En attente de connexion...")
+        conn, addr = server.accept()
+        print("Connecté à", addr)
+        time.sleep(1) 
 
-print("En attente de connexion...")
-conn, addr = server.accept()
-print("Connecté à", addr)
 
 plateau = grille()
 

@@ -1,20 +1,21 @@
 import socket
 
 HOST = "0.0.0.0"
-PORT = 5000
+PORT = 5002
 
 def grille():
     return [[" " for _ in range(3)] for _ in range(3)]
 
 def afficher(L):
-    print("1 | 2 | 3")
+    print("\n1 | 2 | 3")
     print("---------")
     print("4 | 5 | 6")
     print("---------")
-    print("7 | 8 | 9")
+    print("7 | 8 | 9\n")
+    for ligne in L-1:
+        print(" | ".join(ligne))
+        print("---------")
     print()
-    for ligne in L:
-        print(ligne)
 
 def win(L, j):
     for i in range(3):
@@ -33,30 +34,39 @@ conn, addr = server.accept()
 print("Connecté à", addr)
 
 plateau = grille()
+joueur = "X"
 
 for tour in range(9):
     afficher(plateau)
 
-    if tour % 2 == 0:
-        n = int(input("Ton coup (1-9): "))
+    if tour % 2 == 0:  # Tour du serveur
+        while True:
+            n = int(input("Ton coup (1-9): "))
+            y = (n-1)//3
+            x = (n-1)%3
+            if plateau[y][x] == " ":
+                plateau[y][x] = joueur
+                break
+            else:
+                print("Case déjà prise !")
+        # Envoyer le coup au client
         conn.send(str(n).encode())
-        joueur = "X"
-    else:
+    else:  # Tour du client
+        print("En attente du coup adverse...")
         n = int(conn.recv(1024).decode())
-        print("Coup adverse:", n)
-        joueur = "O"
+        print("Coup adverse :", n)
+        y = (n-1)//3
+        x = (n-1)%3
+        plateau[y][x] = "O"
 
-    y = (n-1)//3
-    x = (n-1)%3
-    plateau[y][x] = joueur
-
-    if win(plateau, joueur):
+    if win(plateau, joueur if tour % 2 == 0 else "O"):
         afficher(plateau)
-        print("Victoire de", joueur)
+        print("Victoire de", joueur if tour % 2 == 0 else "O")
         break
-else:   
+else:
     afficher(plateau)
-    print("Match nul")
+    print("Match nul !")
 
+conn.send(b"FIN")
 conn.close()
 server.close()

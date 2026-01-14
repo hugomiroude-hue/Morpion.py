@@ -33,7 +33,12 @@ with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
     for tour in range(9):
         if tour % 2 == 0:  # Tour serveur
             print("En attente du coup adverse...")
-            n = int(s.recv(1024).decode())
+            data = s.recv(1024).decode()
+
+            if not data or data == "FIN":
+                print("Fin de la partie")
+                break
+            n = int(data)
             if n == 0 or n == "FIN":
                 break
             print("Coup adverse :", n)

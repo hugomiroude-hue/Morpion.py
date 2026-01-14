@@ -12,7 +12,7 @@ def afficher(L):
     print("4 | 5 | 6")
     print("---------")
     print("7 | 8 | 9\n")
-    for ligne in L-1:
+    for ligne in L:
         print(" | ".join(ligne))
         print("---------")
     print()
